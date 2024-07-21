@@ -5,21 +5,19 @@
 <div align="center">
     <img src="https://user-images.githubusercontent.com/62433719/173231595-c83f613f-e583-4546-9752-8001b7146c61.png" alt="Logo" width="350" >
 
-  <h3 align="center"> Energy Live SaaS2022-18 </h3>
+  <h3 align="center"> NTUA SaaS - Energy Live </h3>
 
   <p align="center">
-  A SaaS project that follows the microservices architecture.
-    <br />
-    <a href="https://saas-22-18-frontend.herokuapp.com/">View Demo</a>
+  A SaaS project that utilizes the microservices architecture.
   </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents</summary>
+  <summary>Table of contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About the Project</a>
+      <a href="#about-the-project">About the project</a>
       <ul>
         <li><a href="#repository-contents">Repository contents</a></li>
         <li><a href="#built-with">Built with</a></li>
@@ -112,10 +110,10 @@ The code contained within this repository has been adjusted so that it can work 
 ### Running the deployed application
 
 #### Accessing the frontend
-
+<!-- Need to redeploy on Heroku.
 You can access the frontend of the deployed application on the following URL:
 
-<p align="center">https://saas-22-18-frontend.herokuapp.com/</p>
+<p align="center">https://saas-22-18-frontend.herokuapp.com/</p> -->
 
 For the deployment of the project, we have used the Heroku platform. Since this is a university project, we have used the free tiers of all Heroku services that we utilised. This imposes a number of limitations on our project. One of the limitations is that the various Heroku application used by our project are not active at all times, but instead automatically hibernate after 30' of inactivity. Each application resumes whenever a request is made to it, however the wakeup process requires up to half a minute of time. For this reason, when first accessing the above url, you will experience a noticeable delay, which is to be expected.
 
@@ -163,33 +161,33 @@ The project contains three "Data Fetch" microservices, one for each of the avail
 
 ### Data Management Microservices
 
-The project contains three "Data Management" microservices, one for each of the available datasets. All these microservices subscribe to the FETCHED events published by the "Data Fetch" microservices. Each FETCHED event contains information regarding which dataset it concerns, and also contains the ID of the uploaded JSON file in Google Drive. Whenever one of the "Data Management" microservices receives a FETCHED event corresponding to its dataset, it downloads the JSON file from Google Drive, parses it, then imports it into its local database. During this process, apart from new data being imported to the database, existing data may also be updated. After the new data have been imported into the database, the "Data Management" microsercvice publishes a STORED event to the Kafka Event Bus, which is to be received by the Frontend Listener microservice.
+The project contains three "Data Management" microservices, one for each of the available datasets. All these microservices subscribe to the FETCHED events published by the "Data Fetch" microservices. Each FETCHED event contains information regarding which dataset it concerns, and also contains the ID of the uploaded JSON file in Google Drive. Whenever one of the "Data Management" microservices receives a FETCHED event corresponding to its dataset, it downloads the JSON file from Google Drive, parses it, then imports it into its local database. During this process, apart from new data being imported to the database, existing data may also be updated. After the new data have been imported into the database, the "Data Management" microsercvice publishes a STORED event to the Kafka Event Bus, which is to be received by the Front-end Listener microservice.
 
-Each of the "Data Management" microservices also exposes a GET endpoint, which is used by the frontend application to fetch the data requested by the user.
+Each of the "Data Management" microservices also exposes a GET endpoint, which is used by the front-end application to fetch the data requested by the user.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### Frontend Listener
+### Front-end Listener
 
-The Frontend Listener microservice subscribes to the STORED events published by the "Data Management" microservices. The function of the Frontend Listener is to keep a record of the latest data import performed for each dataset. The purpose of this function will be described shortly, when we present the Frontend Web Application.
+The Front-end Listener microservice subscribes to the STORED events published by the "Data Management" microservices. The function of the Frontend Listener is to keep a record of the latest data import performed for each dataset. The purpose of this function will be described shortly, when we present the Frontend Web Application.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### User Management and Security
 
-The users are registered and signed in our app using Sign-in with Google. The Frontend application redirects the user to the Google Authentication server, which performs authentication and returns a Google ID token. That token is then sent to the User Management microservice (via the Sign-in endpoint), which creates an account for the user, if one does not already exist. This microservice returns a private JWT to the Frontend application. The JWT holds information regarding the user and their licence. To access any endpoint of any microservice (other than Sign-in), a valid, non-expired JWT is required.  In addition, in order to access any endpoint other than Sign-in and Extend Licence, a non-expired licence is required. Whenever a user updates their licence, a new JWT is generated to reflect the updated licence. 
+The users are registered and signed in our app using Sign-in with Google. The front-end application redirects the user to the Google Authentication server, which performs authentication and returns a Google ID token. That token is then sent to the User Management microservice (via the Sign-in endpoint), which creates an account for the user, if one does not already exist. This microservice returns a private JWT to the Frontend application. The JWT holds information regarding the user and their licence. To access any endpoint of any microservice (other than Sign-in), a valid, non-expired JWT is required.  In addition, in order to access any endpoint other than Sign-in and Extend Licence, a non-expired licence is required. Whenever a user updates their licence, a new JWT is generated to reflect the updated licence. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### Frontend Web Application
+### Front-end Web Application
 
-In order to fetch the data requested by the user, the Frontend Web Application sends an appropriate GET request to the relevant "Data Management" microservice. The microservice returns the requested data, which is visualised using the Highcharts library. The Highcharts library is also used to provide the option of downloading the data as an image graph or as a CSV file. In order to refresh the presented data whenever new data is received, the Frontend application performs HTTPS polling to the Frontend Listener microservice, periodically checking whether a new data import has occurred. Whenever a new data import is detected, a new request is sent to the relevant microservice and the presented data is updated automatically, without any user action. Overall, the Frontend application achieves seamless transitions without loading new pages or refreshing, owing to the fact that it was developed as a Single-Page Application.
+In order to fetch the data requested by the user, the Front-end Web Application sends an appropriate GET request to the relevant "Data Management" microservice. The microservice returns the requested data, which is visualised using the Highcharts library. The Highcharts library is also used to provide the option of downloading the data as an image graph or as a CSV file. In order to refresh the presented data whenever new data is received, the Frontend application performs HTTPS polling to the Frontend Listener microservice, periodically checking whether a new data import has occurred. Whenever a new data import is detected, a new request is sent to the relevant microservice and the presented data is updated automatically, without any user action. Overall, the Front-end application achieves seamless transitions without loading new pages or refreshing, owing to the fact that it was developed as a Single-Page Application.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Deployment
 
-The whole project was deployed on the Heroku platform. Each of the microservices was deployed as a separate Heroku application. The microservices that need a database use Heroku PostgreSQL as a service. To use Apache Kafka for messaging in the deployment environment, we utilised Apache Kafka clusters provided by CloudKarafka were used as a service. The Frontend application was also deployed as a separate Heroku application. In total, we created 10 different Heroku applications, thus achieving the total decoupling of all backend microservices, whose only method of communication is through the Apache Kafka event bus.
+The project was deployed on the Heroku platform. Each of the microservices was deployed as a separate Heroku application. The microservices that need a database use Heroku PostgreSQL as a service. To use Apache Kafka for messaging in the deployment environment, we utilised Apache Kafka clusters provided by CloudKarafka were used as a service. The Front-end application was also deployed as a separate Heroku application. In total, we created 10 different Heroku applications, thus achieving the total decoupling of all backend microservices, whose only method of communication is through the Apache Kafka event bus.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -201,13 +199,13 @@ For the purposes of the project, we were also asked to perform stress testing on
 
 ## About us
 
-This project was created by our team consisting of the members below:
+This project represents the collaborative efforts of our team. The following individuals contributed their expertise and hard work to bring this to life:
 
 - [Alex Kouridakis](https://github.com/alex-kouridakis)
 - [Eleftherios Oikonomou](https://github.com/SeCre827)
-- [Vikentios Vitalis](https://github.com/VikentiosVitalis)
 - [Stefanos Tsolos](https://github.com/stefanostsolos)
+- [Vikentios Vitalis](https://github.com/VikentiosVitalis)
 
-Feel free to reach out to us for any comment or question!
+Our team is readily available to address any comments or questions you may have regarding this project. Please don't hesitate to connect with us—we look forward to hearing from you!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
