@@ -34,9 +34,9 @@
         <li><a href="#event-passing-using-apache-kafka">Event passing using Apache Kafka</a></li>
         <li><a href="#data-fetch-microservices">Data Fetch Microservices</a></li>
         <li><a href="#data-management-microservices">Data Management Microservices</a></li>
-        <li><a href="#frontend-listener">Frontend Listener</a></li>
+        <li><a href="#frontend-listener">Front-end Listener</a></li>
         <li><a href="#user-management-and-security">User Management and Security</a></li>
-        <li><a href="#frontend-web-application">Frontend Web Application</a></li>
+        <li><a href="#frontend-web-application">Front-end Web Application</a></li>
       </ul>
     </li>
     <li><a href="#deployment">Deployment</a></li>
@@ -51,7 +51,7 @@
 
 This project was developed by our team as part of the SaaS course, during the 8th semester of the Electrical and Computer Engineering school of the National Technical University of Athens. The goal of this project was to develop a SaaS application of non-trivial size, which would conform to the [microservices architecture](https://en.wikipedia.org/wiki/Microservices) and utilise state-of-the-art technologies to implement the communication between the microservices and the deployment of each microservice.
 
-The thematic field of the project is the European electrical energy market. The European Network of Transmission System Operators ([ENTSO-E](https://www.entsoe.eu/)) hosts an [SFTP server](https://transparency.entsoe.eu/content/static_content/Static%20content/knowledge%20base/SFTP-Transparency_Docs.html) which provides a large number of different datasets regarding the operation of Europe's electicity system. Of those datasets, we are concerned with only three, specifically the "Actual Total Load" ("ATL"), "Aggregated Generation per Type" ("AGPT") and "Physical Flows" ("PF") datasets. The purpose of the application we were asked to develop is to gather data from those datasets as they are updated in real time. The users of the application should then be able access the data through a frontend web application, which should enable them to filter through the data, view the requested data in a graph, as well as download the requested data. The contents of the frontend application should be updated in real time, without the need for the user to manually refresh the web page.
+The thematic field of the project is the European electrical energy market. The European Network of Transmission System Operators ([ENTSO-E](https://www.entsoe.eu/)) hosts an [SFTP server](https://transparency.entsoe.eu/content/static_content/Static%20content/knowledge%20base/SFTP-Transparency_Docs.html) which provides a large number of different datasets regarding the operation of Europe's electicity system. Of those datasets, we are concerned with only three, specifically the "Actual Total Load" ("ATL"), "Aggregated Generation per Type" ("AGPT") and "Physical Flows" ("PF") datasets. The purpose of the application we were asked to develop is to gather data from those datasets as they are updated in real time. The users of the application should then be able access the data through a front-end web application, which should enable them to filter through the data, view the requested data in a graph, as well as download the requested data. The contents of the front-end application should be updated in real time, without the need for the user to manually refresh the web page.
 
 <div align="center">
 <img src="https://user-images.githubusercontent.com/75163039/176540352-4f92d4bc-8d5c-4144-a25c-d9951003d5e2.png" alt="overview" width="900" >
@@ -61,15 +61,15 @@ The thematic field of the project is the European electrical energy market. The 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Repository contents
-This repository contains the cumulative work produced to develop this project. Specifically, the `architecture` directory contains a Visual Paradigm file, which describes the project's architecture and functionality through various appropriate diagrams. The `frontend` directory contains all the code for the frontend application, while the `microservices` directory contains one sub-directory for each developed microservice, containing the code for that microservice. The `admin` directory contains an administration application which is used to test the functionality of the project. Finally, the `stress-testing` directory contains the results of the stress testing performed on the project's APIs.
+This repository contains the cumulative work produced to develop this project. Specifically, the `architecture` directory contains a Visual Paradigm file, which describes the project's architecture and functionality through various appropriate diagrams. The `frontend` directory contains all the code for the front-end application, while the `microservices` directory contains one sub-directory for each developed microservice, containing the code for that microservice. The `admin` directory contains an administration application which is used to test the functionality of the project. Finally, the `stress-testing` directory contains the results of the stress testing performed on the project's APIs.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built with
 
-This section lists the major frameworks/libraries that were used to bootstrap our project. In general, the project's code was written exclusively in JavaScript and TypeScript, with HTML and CSS also being used to develop the frontend application. In addition, different members of the team wished to use different frameworks while developing each microservice. This was possible due to the loose coupling of the microservices (i.e. each microservice functions independently of each other) and led to our project containing various different technologies.
+This section lists the major frameworks/libraries that were used to bootstrap our project. In general, the project's code was written exclusively in JavaScript and TypeScript, with HTML and CSS also being used to develop the front-end application. In addition, different members of the team wished to use different frameworks while developing each microservice. This was possible due to the loose coupling of the microservices (i.e. each microservice functions independently of each other) and led to our project containing various different technologies.
 
-#### Frontend
+#### Front-end
 
 - [React.js](https://reactjs.org/)
 - Data visualisation: [Highcharts](https://www.highcharts.com/)
@@ -109,9 +109,9 @@ The code contained within this repository has been adjusted so that it can work 
 
 ### Running the deployed application
 
-#### Accessing the frontend
+#### Accessing the front-end
 <!-- Need to redeploy on Heroku.
-You can access the frontend of the deployed application on the following URL:
+You can access the front-end of the deployed application on the following URL:
 
 <p align="center">https://saas-22-18-frontend.herokuapp.com/</p> -->
 
@@ -125,11 +125,11 @@ Once you have a positive amount of time remaining on your licence, you can acces
 
 To avoid connecting to the actual ENTSO-E SFTP server and performing large numbers of requests while developing the application and experimenting, we were provided with a large number of real-life data fetched in the past and were instructed to use them to simulate new data being fetched by our application. Specifically, for each hour from 2022-01-01 00:00:00 to 2022-03-08 23:00:00, for each of the three datasets, we were given a CSV file containing all data fetched from the SFTP server at that hour. The total size of the data we received was about 163 GB. To achieve the desired result, we created a Google Drive folder where we placed a small subset of the given data. Thus, instead of actually connecting to the SFTP server, the application's backend simply fetches the appropriate CSV files from Google Drive, and then proceeds to store the relevant data. In other words, we simulate the SFTP server using Google Drive.
 
-In a real-life scenario, the application's backend periodically fetches the next CSV file from the SFTP server, for example once every hour. However, for the purposes of exhibition, we need to be able to manually cause the backend to fetch the next CSV file whenever we wish to. This goal is achieved through the use of the admin application contained in the `admin` directory. You should pull that directory into a local machine and run `npm install && tsc` to install the required packages and compile the TypeScript code. Afterwards, you should run `npm run prod:reset` and `npm run reset_files`. From here on, every time you run `npm run update_files` followed by `npm run prod:fetch_files`, the backend application will fetch the next CSV file for each dataset, the relevant data will be stored, and the frontend application will be updated automatically.
+In a real-life scenario, the application's backend periodically fetches the next CSV file from the SFTP server, for example once every hour. However, for the purposes of exhibition, we need to be able to manually cause the backend to fetch the next CSV file whenever we wish to. This goal is achieved through the use of the admin application contained in the `admin` directory. You should pull that directory into a local machine and run `npm install && tsc` to install the required packages and compile the TypeScript code. Afterwards, you should run `npm run prod:reset` and `npm run reset_files`. From here on, every time you run `npm run update_files` followed by `npm run prod:fetch_files`, the backend application will fetch the next CSV file for each dataset, the relevant data will be stored, and the front-end application will be updated automatically.
 
 #### About the available data
 
-The CSV files fetched from the SFTP server get progressively larger as time passes, reaching the maximum size at the end of each month (the largest CSV we were provided with is about 130MB). While developing our application locally, we ensured it was able to fetch and store such large files effectively, without significant delays. However, when deploying our application, one of the limitations of the free tier of Heroku services is the relatively small amount of storage space provided in each database, which limits how much data we can store in the deployed application. Specifically, we are only able to store data for 2022-01-01 and for no more days after that. Therefore, in order to view any data in the frontend application, the user should select a start date before 2022-01-01.
+The CSV files fetched from the SFTP server get progressively larger as time passes, reaching the maximum size at the end of each month (the largest CSV we were provided with is about 130MB). While developing our application locally, we ensured it was able to fetch and store such large files effectively, without significant delays. However, when deploying our application, one of the limitations of the free tier of Heroku services is the relatively small amount of storage space provided in each database, which limits how much data we can store in the deployed application. Specifically, we are only able to store data for 2022-01-01 and for no more days after that. Therefore, in order to view any data in the front-end application, the user should select a start date before 2022-01-01.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -175,13 +175,13 @@ The Front-end Listener microservice subscribes to the STORED events published by
 
 ### User Management and Security
 
-The users are registered and signed in our app using Sign-in with Google. The front-end application redirects the user to the Google Authentication server, which performs authentication and returns a Google ID token. That token is then sent to the User Management microservice (via the Sign-in endpoint), which creates an account for the user, if one does not already exist. This microservice returns a private JWT to the Frontend application. The JWT holds information regarding the user and their licence. To access any endpoint of any microservice (other than Sign-in), a valid, non-expired JWT is required.  In addition, in order to access any endpoint other than Sign-in and Extend Licence, a non-expired licence is required. Whenever a user updates their licence, a new JWT is generated to reflect the updated licence. 
+The users are registered and signed in our app using Sign-in with Google. The front-end application redirects the user to the Google Authentication server, which performs authentication and returns a Google ID token. That token is then sent to the User Management microservice (via the Sign-in endpoint), which creates an account for the user, if one does not already exist. This microservice returns a private JWT to the Front-end application. The JWT holds information regarding the user and their licence. To access any endpoint of any microservice (other than Sign-in), a valid, non-expired JWT is required.  In addition, in order to access any endpoint other than Sign-in and Extend Licence, a non-expired licence is required. Whenever a user updates their licence, a new JWT is generated to reflect the updated licence. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Front-end Web Application
 
-In order to fetch the data requested by the user, the Front-end Web Application sends an appropriate GET request to the relevant "Data Management" microservice. The microservice returns the requested data, which is visualised using the Highcharts library. The Highcharts library is also used to provide the option of downloading the data as an image graph or as a CSV file. In order to refresh the presented data whenever new data is received, the Frontend application performs HTTPS polling to the Frontend Listener microservice, periodically checking whether a new data import has occurred. Whenever a new data import is detected, a new request is sent to the relevant microservice and the presented data is updated automatically, without any user action. Overall, the Front-end application achieves seamless transitions without loading new pages or refreshing, owing to the fact that it was developed as a Single-Page Application.
+In order to fetch the data requested by the user, the Front-end Web Application sends an appropriate GET request to the relevant "Data Management" microservice. The microservice returns the requested data, which is visualised using the Highcharts library. The Highcharts library is also used to provide the option of downloading the data as an image graph or as a CSV file. In order to refresh the presented data whenever new data is received, the Front-end application performs HTTPS polling to the Frontend Listener microservice, periodically checking whether a new data import has occurred. Whenever a new data import is detected, a new request is sent to the relevant microservice and the presented data is updated automatically, without any user action. Overall, the Front-end application achieves seamless transitions without loading new pages or refreshing, owing to the fact that it was developed as a Single-Page Application.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
