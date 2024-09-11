@@ -13,7 +13,7 @@
     "csvtojson": "^2.0.10",
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",
-    "express": "~4.16.1",
+    "express": "~4.20.0",
     "googleapis": "^100.0.0",
     "http-errors": "~1.6.3",
     "kafkajs": "^2.0.1",
